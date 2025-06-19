@@ -1,175 +1,234 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Calculadora de Probabilidad y Minijuegos</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuciones Discretas - Calculadora Avanzada</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
         :root {
-            --primary: #4e54c8;
-            --secondary: #8f94fb;
-            --accent: #ff6b6b;
-            --dark: #2c3e50;
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --dark: #1d1e2c;
             --light: #f8f9fa;
-            --success: #1dd1a1;
-            --warning: #feca57;
-            --gray: #8395a7;
-            --purple: #9b59b6;
-            --orange: #e67e22;
-            --pink: #e84393;
-            --teal: #1abc9c;
-            --blue: #3498db;
-            --green: #2ecc71;
-            --yellow: #f1c40f;
+            --success: #4cc9f0;
+            --warning: #ff9e00;
+            --gray: #8d99ae;
+            --purple: #7209b7;
+            --orange: #f46036;
+            --pink: #e63946;
+            --teal: #2a9d8f;
+            --blue: #4895ef;
+            --green: #43aa8b;
+            --yellow: #f9c74f;
+            --background: #0a192f;
+            --card-bg: #112240;
+            --sidebar-bg: #020c1b;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
+            background: linear-gradient(135deg, var(--background) 0%, #172a45 100%);
+            color: #e6f1ff;
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
             line-height: 1.6;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            padding: 25px 20px;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: transform 0.3s ease;
         }
         
-        header {
+        .logo {
             text-align: center;
-            padding: 30px 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 15px;
+            padding: 20px 0;
             margin-bottom: 30px;
-            color: white;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 100,0 100,100" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: cover;
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--success);
+            margin-bottom: 5px;
         }
         
-        header h1 {
-            font-size: 2.5rem;
+        .logo p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .nav-menu li {
             margin-bottom: 10px;
-            position: relative;
-            z-index: 2;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
-        header p {
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
-            opacity: 0.9;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .menu-container {
+        .nav-menu a {
             display: flex;
-            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #a8b2d1;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            background: rgba(67, 97, 238, 0.2);
+            color: white;
+        }
+        
+        .nav-menu i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .sidebar-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+            text-align: center;
+            opacity: 0.7;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-header h2 {
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .page-header h2 i {
+            color: var(--accent);
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
-            flex-wrap: wrap;
         }
         
-        .menu-btn {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            background: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--dark);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            min-width: 250px;
+        .stats-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            margin-right: 15px;
+            font-size: 1.5rem;
         }
         
-        .menu-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        .stats-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
         }
         
-        .menu-btn.active {
-            background: var(--accent);
-            color: white;
+        .stats-info p {
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
         
-        .content-section {
-            display: none;
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .content-section.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
+        /* Distribution Cards */
         .distributions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 25px;
-            margin-top: 20px;
         }
         
         .distribution-card {
-            background: var(--light);
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
         
         .distribution-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
         
         .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 15px 20px;
-            font-weight: 600;
-            font-size: 1.2rem;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h3 {
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .card-body {
-            padding: 20px;
+            padding: 25px;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
         .input-group {
@@ -180,1075 +239,473 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: var(--dark);
+            color: #a8b2d1;
+            font-size: 0.95rem;
         }
         
         .input-group input {
             width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            color: white;
         }
         
         .input-group input:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.2);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            background: rgba(255, 255, 255, 0.12);
         }
         
         .btn-calculate {
             width: 100%;
-            padding: 12px;
-            background: var(--accent);
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent) 0%, #e71d8a 100%);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
             margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
         
         .btn-calculate:hover {
-            background: #ff5252;
+            background: linear-gradient(135deg, #e71d8a 0%, #d0167a 100%);
+            transform: translateY(-2px);
         }
         
         .chart-container {
             height: 250px;
-            margin-top: 20px;
+            margin-top: 25px;
             position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 10px;
         }
         
         .random-result {
             margin-top: 20px;
             padding: 15px;
-            background: #e3f2fd;
+            background: rgba(76, 201, 240, 0.1);
             border-radius: 8px;
             font-weight: 500;
             text-align: center;
+            border: 1px solid rgba(76, 201, 240, 0.2);
         }
         
-        .generator-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-        }
-        
-        .generator-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .generator-controls {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 15px;
-        }
-        
-        .btn-generate {
-            background: var(--success);
-            color: white;
-            border: none;
+        .distribution-description {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
         
-        .btn-generate:hover {
-            background: #10ac84;
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
         }
         
-        .results-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-            background: var(--light);
-            border-radius: 8px;
+        @media (max-width: 768px) {
+            .distributions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
         }
         
-        .number-badge {
-            display: inline-block;
-            padding: 8px;
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
             background: var(--primary);
             color: white;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            color: var(--gray);
-            font-size: 0.9rem;
-            margin-top: 30px;
-        }
-        
-        .section-title {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary);
-            font-size: 1.5rem;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .game-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .game-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .game-header {
-            padding: 20px;
-            color: white;
-            font-weight: 600;
-            font-size: 1.3rem;
-        }
-        
-        .game-body {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .game-visual {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 200px;
-            margin: 15px 0;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-        }
-        
-        .urn {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            padding: 15px;
-            background: #e0f7fa;
-            border-radius: 10px;
-            min-height: 150px;
-        }
-        
-        .ball {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
-        .ball:hover {
-            transform: scale(1.1);
+        @media (max-width: 1024px) {
+            .menu-toggle {
+                display: flex;
+            }
         }
         
-        .dice-container {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-        
-        .die {
-            width: 70px;
-            height: 70px;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .dartboard {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: #2c3e50;
-            position: relative;
-            margin: 0 auto;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        .dart {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-            transform: translate(-50%, -50%);
-            z-index: 10;
-        }
-        
-        .dart-bullseye {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--accent);
-            z-index: 5;
-        }
-        
-        .dart-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            border-radius: 50%;
-            border: 2px solid white;
-            transform: translate(-50%, -50%);
-        }
-        
-        .loot-box {
-            width: 120px;
-            height: 120px;
-            background: var(--orange);
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-        
-        .loot-box:hover {
-            transform: scale(1.05);
-        }
-        
-        .loot-box::before {
-            content: "";
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 2px dashed rgba(255,255,255,0.5);
-            border-radius: 5px;
-        }
-        
-        .loot-box i {
-            font-size: 3rem;
-            color: rgba(255,255,255,0.8);
-        }
-        
-        .loot-result {
-            min-height: 40px;
-            text-align: center;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-        
-        .fishing-pond {
-            width: 100%;
-            height: 120px;
-            background: #3498db;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-        
-        .fish {
-            position: absolute;
-            font-size: 2rem;
-            animation: swim 15s linear infinite;
-        }
-        
-        @keyframes swim {
-            0% { left: -50px; transform: translateY(0); }
-            25% { transform: translateY(-20px); }
-            50% { left: 100%; transform: translateY(0); }
-            75% { transform: translateY(20px); }
-            100% { left: -50px; transform: translateY(0); }
-        }
-        
-        .game-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .game-btn {
-            padding: 12px;
-            background: var(--primary);
-            color: white;
+        .fav-btn {
+            background: none;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            color: #ffd43b;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: transform 0.3s;
         }
         
-        .game-btn:hover {
-            background: #3f43b9;
+        .fav-btn:hover {
+            transform: scale(1.2);
         }
         
-        .game-stats {
-            background: #e3f2fd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 10px;
-            text-align: center;
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .highlight {
-            background: var(--warning);
-            padding: 3px 8px;
-            border-radius: 5px;
-            color: var(--dark);
-        }
-        
-        @media (max-width: 768px) {
-            .menu-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .menu-btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .distributions-grid, .games-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .generator-controls {
-                grid-template-columns: 1fr;
-            }
+        .content-section {
+            animation: fadeIn 0.5s ease;
         }
     </style>
 </head>
 <body>
-<div class="container">
-<header>
-<h1><i class="fas fa-calculator"></i> Calculadora de Probabilidad</h1>
-<p>Herramienta interactiva para visualizar distribuciones estadísticas y jugar con probabilidades</p>
-</header>
-<div class="menu-container">
-<button class="menu-btn active" data-target="continuous">
-<i class="fas fa-chart-line"></i> Variables Continuas
-            </button>
-<button class="menu-btn" data-target="discrete">
-<i class="fas fa-chart-bar"></i> Distribuciones Discretas
-            </button>
-<button class="menu-btn" data-target="games">
-<i class="fas fa-gamepad"></i> Minijuegos de Probabilidad
-            </button>
-
-<button class="menu-btn" data-target="solar-calculator">
-<i class="fas fa-solar-panel"></i> Calculadora Solar
-</button>
-</div>
-<!-- Sección de Variables Continuas -->
-<div class="content-section active" id="continuous">
-<h2 class="section-title"><i class="fas fa-chart-line"></i> Distribuciones Continuas</h2>
-<div class="distributions-grid">
-<!-- Distribución Uniforme -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);">Distribución Uniforme</div>
-<div class="card-body">
-<div class="input-group">
-<label for="uniform-a">Valor mínimo (a)</label>
-<input id="uniform-a" step="0.1" type="number" value="0"/>
-</div>
-<div class="input-group">
-<label for="uniform-b">Valor máximo (b)</label>
-<input id="uniform-b" step="0.1" type="number" value="10"/>
-</div>
-<button class="btn-calculate" onclick="plotUniform()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="uniform-chart"></canvas>
-</div>
-<div class="random-result" id="uniform-result">Número aleatorio: </div>
-</div>
-</div>
-<!-- Distribución Gaussiana -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--accent) 0%, #ff8e8e 100%);">Distribución Gaussiana</div>
-<div class="card-body">
-<div class="input-group">
-<label for="gaussian-mean">Media (μ)</label>
-<input id="gaussian-mean" step="0.1" type="number" value="0"/>
-</div>
-<div class="input-group">
-<label for="gaussian-std">Desviación Estándar (σ)</label>
-<input id="gaussian-std" min="0.1" step="0.1" type="number" value="1"/>
-</div>
-<button class="btn-calculate" onclick="plotGaussian()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="gaussian-chart"></canvas>
-</div>
-<div class="random-result" id="gaussian-result">Número aleatorio: </div>
-</div>
-</div>
-<!-- Distribución Exponencial -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--success) 0%, #2ecc71 100%);">Distribución Exponencial</div>
-<div class="card-body">
-<div class="input-group">
-<label for="exponential-lambda">Tasa (λ)</label>
-<input id="exponential-lambda" min="0.1" step="0.1" type="number" value="0.5"/>
-</div>
-<button class="btn-calculate" onclick="plotExponential()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="exponential-chart"></canvas>
-</div>
-<div class="random-result" id="exponential-result">Número aleatorio: </div>
-</div>
-</div>
-</div>
-</div>
-<!-- Sección de Distribuciones Discretas -->
-<div class="content-section" id="discrete">
-<h2 class="section-title"><i class="fas fa-chart-bar"></i> Distribuciones Discretas</h2>
-<div class="distributions-grid">
-<!-- Bernoulli -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);">Bernoulli</div>
-<div class="card-body">
-<div class="input-group">
-<label for="bernoulli-p">Probabilidad de éxito (p)</label>
-<input id="bernoulli-p" max="1" min="0" step="0.1" type="number" value="0.7"/>
-</div>
-<button class="btn-calculate" onclick="plotBernoulli()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="bernoulli-chart"></canvas>
-</div>
-<div class="random-result" id="bernoulli-result">Número aleatorio: </div>
-</div>
-</div>
-<!-- Binomial -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--accent) 0%, #ff8e8e 100%);">Binomial</div>
-<div class="card-body">
-<div class="input-group">
-<label for="binomial-n">Número de ensayos (n)</label>
-<input id="binomial-n" min="1" step="1" type="number" value="10"/>
-</div>
-<div class="input-group">
-<label for="binomial-p">Probabilidad de éxito (p)</label>
-<input id="binomial-p" max="1" min="0" step="0.1" type="number" value="0.7"/>
-</div>
-<button class="btn-calculate" onclick="plotBinomial()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="binomial-chart"></canvas>
-</div>
-<div class="random-result" id="binomial-result">Número aleatorio: </div>
-</div>
-</div>
-<!-- Poisson -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--success) 0%, #2ecc71 100%);">Poisson</div>
-<div class="card-body">
-<div class="input-group">
-<label for="poisson-lambda">Tasa (λ)</label>
-<input id="poisson-lambda" min="0.1" step="0.1" type="number" value="4"/>
-</div>
-<button class="btn-calculate" onclick="plotPoisson()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="poisson-chart"></canvas>
-</div>
-<div class="random-result" id="poisson-result">Número aleatorio: </div>
-</div>
-</div>
-<!-- Binomial Negativa -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--purple) 0%, #8e44ad 100%);">Binomial Negativa</div>
-<div class="card-body">
-<div class="input-group">
-<label for="negbin-r">Número de éxitos (r)</label>
-<input id="negbin-r" min="1" step="1" type="number" value="5"/>
-</div>
-<div class="input-group">
-<label for="negbin-p">Probabilidad de éxito (p)</label>
-<input id="negbin-p" max="1" min="0" step="0.1" type="number" value="0.7"/>
-</div>
-<button class="btn-calculate" onclick="plotNegativeBinomial()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="negbin-chart"></canvas>
-</div>
-<div class="random-result" id="negbin-result">Número aleatorio: </div>
-</div>
-</div>
-<!-- Geométrica -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--orange) 0%, #d35400 100%);">Geométrica</div>
-<div class="card-body">
-<div class="input-group">
-<label for="geometric-p">Probabilidad de éxito (p)</label>
-<input id="geometric-p" max="1" min="0" step="0.1" type="number" value="0.7"/>
-</div>
-<button class="btn-calculate" onclick="plotGeometric()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="geometric-chart"></canvas>
-</div>
-<div class="random-result" id="geometric-result">Número aleatorio: </div>
-</div>
-</div>
-<!-- Hipergeométrica -->
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, var(--pink) 0%, #fd79a8 100%);">Hipergeométrica</div>
-<div class="card-body">
-<div class="input-group">
-<label for="hyper-n">Tamaño población (N)</label>
-<input id="hyper-n" min="1" step="1" type="number" value="50"/>
-</div>
-<div class="input-group">
-<label for="hyper-k">Éxitos en población (K)</label>
-<input id="hyper-k" min="1" step="1" type="number" value="10"/>
-</div>
-<div class="input-group">
-<label for="hyper-num">Número de extracciones (n)</label>
-<input id="hyper-num" min="1" step="1" type="number" value="5"/>
-</div>
-<button class="btn-calculate" onclick="plotHypergeometric()">Calcular y Graficar</button>
-<div class="chart-container">
-<canvas id="hyper-chart"></canvas>
-</div>
-<div class="random-result" id="hyper-result">Número aleatorio: </div>
-</div>
-</div>
-</div>
-</div>
-<!-- Sección de Minijuegos -->
-<div class="content-section" id="games">
-<h2 class="section-title"><i class="fas fa-gamepad"></i> Minijuegos de Probabilidad</h2>
-<p style="text-align: center; margin-bottom: 20px; color: #555;">
-                Explora conceptos de probabilidad a través de estos juegos interactivos.
-                Cada juego ilustra una distribución estadística diferente.
-            </p>
-<div class="games-grid">
-<!-- Juego 1: Urna -->
-<div class="game-card">
-<div class="game-header" style="background: linear-gradient(135deg, var(--blue) 0%, #2980b9 100%);">
-<i class="fas fa-basketball-ball"></i> Extracción de Bolas de Urna
+    <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </div>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1><i class="fas fa-chart-pie"></i> PROB-APP</h1>
+            <p>Análisis de Distribuciones Discretas</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li><a href="#discrete" class="active"><i class="fas fa-chart-bar"></i> Distribuciones Discretas</a></li>
+            <li><a href="#continuous"><i class="fas fa-chart-line"></i> Distribuciones Continuas</a></li>
+            <li><a href="#games"><i class="fas fa-gamepad"></i> Minijuegos</a></li>
+            <li><a href="#solar-calculator"><i class="fas fa-solar-panel"></i> Calculadora Solar</a></li>
+            <li><a href="#random-generator"><i class="fas fa-random"></i> Generador Aleatorio</a></li>
+            <li><a href="#favorites"><i class="fas fa-star"></i> Favoritos</a></li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <p>© 2023 Prob-App v2.0</p>
+            <p>Todos los derechos reservados</p>
+        </div>
+    </aside>
+    
+    <main class="main-content">
+        <div class="page-header">
+            <h2><i class="fas fa-chart-bar"></i> Distribuciones Discretas</h2>
+            <div class="actions">
+                <button class="btn-calculate"><i class="fas fa-sync-alt"></i> Recalcular Todo</button>
+            </div>
+        </div>
+        
+        <div class="stats-cards">
+            <div class="stats-card">
+                <div class="stats-icon" style="background: rgba(67, 97, 238, 0.2);">
+                    <i class="fas fa-calculator" style="color: #4361ee;"></i>
+                </div>
+                <div class="stats-info">
+                    <h3>6</h3>
+                    <p>Distribuciones</p>
+                </div>
+            </div>
+            
+            <div class="stats-card">
+                <div class="stats-icon" style="background: rgba(76, 201, 240, 0.2);">
+                    <i class="fas fa-random" style="color: #4cc9f0;"></i>
+                </div>
+                <div class="stats-info">
+                    <h3>24</h3>
+                    <p>Parámetros</p>
+                </div>
+            </div>
+            
+            <div class="stats-card">
+                <div class="stats-icon" style="background: rgba(247, 37, 133, 0.2);">
+                    <i class="fas fa-chart-line" style="color: #f72585;"></i>
+                </div>
+                <div class="stats-info">
+                    <h3>12</h3>
+                    <p>Gráficos</p>
+                </div>
+            </div>
+            
+            <div class="stats-card">
+                <div class="stats-icon" style="background: rgba(255, 158, 0, 0.2);">
+                    <i class="fas fa-history" style="color: #ff9e00;"></i>
+                </div>
+                <div class="stats-info">
+                    <h3>48</h3>
+                    <p>Cálculos Realizados</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="distributions-grid">
+            <!-- Bernoulli -->
+            <div class="distribution-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-dice-one"></i> Bernoulli</h3>
+                    <button class="fav-btn"><i class="far fa-star"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="bernoulli-p">Probabilidad de éxito (p)</label>
+                        <input id="bernoulli-p" max="1" min="0" step="0.1" type="number" value="0.7">
                     </div>
-<div class="game-body">
-<div class="game-controls">
-<div class="input-group">
-<label for="bet">Apuesta (suma de 2 a 12):</label>
-<input id="bet" max="12" min="2" type="number" value="7"/>
-</div>
-<div class="input-group">
-<label>
-<input id="with-replacement" type="checkbox"/> Con reemplazo
-                                </label>
-</div>
-</div>
-<div class="game-visual">
-<div class="urn" id="urn">
-<div class="ball" style="background-color: #e74c3c;">1</div>
-<div class="ball" style="background-color: #3498db;">2</div>
-<div class="ball" style="background-color: #2ecc71;">3</div>
-<div class="ball" style="background-color: #f1c40f;">4</div>
-<div class="ball" style="background-color: #9b59b6;">5</div>
-<div class="ball" style="background-color: #1abc9c;">6</div>
-</div>
-</div>
-<button class="game-btn" onclick="drawBalls()">
-<i class="fas fa-hand-point-up"></i> Extraer 2 bolas
-                        </button>
-<div class="game-stats">
-<div id="urn-result">Resultado: </div>
-<div id="urn-sum">Suma: </div>
-<div id="urn-win">Victorias: <span class="highlight">0</span> | Intentos: <span class="highlight">0</span></div>
-</div>
-<div class="random-result">
-<strong>Distribución:</strong> Uniforme discreta (con/sin reemplazo)
-                        </div>
-</div>
-</div>
-<!-- Juego 2: Dados -->
-<div class="game-card">
-<div class="game-header" style="background: linear-gradient(135deg, var(--orange) 0%, #e67e22 100%);">
-<i class="fas fa-dice"></i> Lanzamiento de Dados
+                    
+                    <button class="btn-calculate" onclick="plotBernoulli()">
+                        <i class="fas fa-calculator"></i> Calcular y Graficar
+                    </button>
+                    
+                    <div class="chart-container">
+                        <canvas id="bernoulli-chart"></canvas>
                     </div>
-<div class="game-body">
-<div class="game-visual">
-<div class="dice-container">
-<div class="die" id="die1">1</div>
-<div class="die" id="die2">1</div>
-</div>
-</div>
-<div class="game-controls">
-<div class="input-group">
-<label>
-<input checked="" id="two-dice" type="checkbox"/> Lanzar dos dados
-                                </label>
-</div>
-</div>
-<button class="game-btn" onclick="rollDice()">
-<i class="fas fa-dice"></i> Lanzar dados
-                        </button>
-<div class="game-stats">
-<div id="dice-result">Último resultado: </div>
-<div id="dice-stats">Total lanzamientos: <span class="highlight">0</span></div>
-</div>
-<div class="chart-container">
-<canvas id="dice-chart"></canvas>
-</div>
-<div class="random-result">
-<strong>Distribución:</strong> Uniforme discreta
-                        </div>
-</div>
-</div>
-<!-- Juego 3: Dardos -->
-<div class="game-card">
-<div class="game-header" style="background: linear-gradient(135deg, var(--purple) 0%, #9b59b6 100%);">
-<i class="fas fa-bullseye"></i> Dardos Aleatorios
+                    
+                    <div class="random-result" id="bernoulli-result">Número aleatorio: </div>
+                    
+                    <div class="distribution-description">
+                        <p><strong>Descripción:</strong> Modela experimentos con solo dos resultados posibles (éxito/fracaso).</p>
+                        <p><strong>Uso:</strong> Lanzamiento de moneda, éxito/fracaso en un intento.</p>
                     </div>
-<div class="game-body">
-<div class="game-visual">
-<div class="dartboard" id="dartboard">
-<div class="dart-bullseye"></div>
-<div class="dart-ring" style="width: 150px; height: 150px;"></div>
-<div class="dart-ring" style="width: 100px; height: 100px;"></div>
-<div class="dart-ring" style="width: 50px; height: 50px;"></div>
-<!-- Los dardos se agregarán aquí dinámicamente -->
-</div>
-</div>
-<button class="game-btn" onclick="throwDart()">
-<i class="fas fa-bullseye"></i> Lanzar dardo
-                        </button>
-<div class="game-stats">
-<div id="dart-result">Resultado: </div>
-<div id="dart-stats">Aciertos: <span class="highlight">0</span> | Lanzamientos: <span class="highlight">0</span></div>
-</div>
-<div class="random-result">
-<strong>Distribución:</strong> Normal (Gaussiana)
+                </div>
+            </div>
+            
+            <!-- Binomial -->
+            <div class="distribution-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-dice"></i> Binomial</h3>
+                    <button class="fav-btn"><i class="far fa-star"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="binomial-n">Número de ensayos (n)</label>
+                            <input id="binomial-n" min="1" step="1" type="number" value="10">
                         </div>
-</div>
-</div>
-<!-- Juego 4: Loot Box -->
-<div class="game-card">
-<div class="game-header" style="background: linear-gradient(135deg, var(--pink) 0%, #e84393 100%);">
-<i class="fas fa-gift"></i> Simulación de Loot Box
+                        <div class="input-group">
+                            <label for="binomial-p">Probabilidad (p)</label>
+                            <input id="binomial-p" max="1" min="0" step="0.1" type="number" value="0.7">
+                        </div>
                     </div>
-<div class="game-body">
-<div class="game-visual">
-<div class="loot-box" onclick="openBox()">
-<i class="fas fa-gift"></i>
-</div>
-</div>
-<div class="game-controls">
-<div class="input-group">
-<label for="box-prob">Probabilidad de ítem raro:</label>
-<input id="box-prob" max="0.99" min="0.01" step="0.01" type="number" value="0.1"/>
-</div>
-</div>
-<button class="game-btn" onclick="openBox()">
-<i class="fas fa-box-open"></i> Abrir caja
-                        </button>
-<div class="loot-result" id="box-result"></div>
-<div class="game-stats">
-<div id="box-stats">Ítems raros: <span class="highlight">0</span> | Total cajas: <span class="highlight">0</span></div>
-</div>
-<div class="random-result">
-<strong>Distribución:</strong> Bernoulli/Binomial
-                        </div>
-</div>
-</div>
-<!-- Juego 5: Pesca -->
-<div class="game-card">
-<div class="game-header" style="background: linear-gradient(135deg, var(--teal) 0%, #1abc9c 100%);">
-<i class="fas fa-fish"></i> Juego de Pesca
+                    
+                    <button class="btn-calculate" onclick="plotBinomial()">
+                        <i class="fas fa-calculator"></i> Calcular y Graficar
+                    </button>
+                    
+                    <div class="chart-container">
+                        <canvas id="binomial-chart"></canvas>
                     </div>
-<div class="game-body">
-<div class="game-visual">
-<div class="fishing-pond">
-<div class="fish">🐟</div>
-<div class="fish" style="animation-delay: -3s;">🐠</div>
-<div class="fish" style="animation-delay: -7s;">🐡</div>
-</div>
-</div>
-<div class="game-controls">
-<div class="input-group">
-<label for="fish-prob">Probabilidad de pez raro:</label>
-<input id="fish-prob" max="0.99" min="0.01" step="0.01" type="number" value="0.2"/>
-</div>
-</div>
-<button class="game-btn" onclick="goFishing()">
-<i class="fas fa-fishing-rod"></i> Intentar pescar
-                        </button>
-<div class="loot-result" id="fishing-result"></div>
-<div class="game-stats">
-<div id="fishing-attempts">Intentos actuales: <span class="highlight">0</span></div>
-<div id="fishing-stats">Total peces raros: <span class="highlight">0</span></div>
-</div>
-<div class="random-result">
-<strong>Distribución:</strong> Geométrica
+                    
+                    <div class="random-result" id="binomial-result">Número aleatorio: </div>
+                    
+                    <div class="distribution-description">
+                        <p><strong>Descripción:</strong> Número de éxitos en una secuencia de ensayos independientes.</p>
+                        <p><strong>Uso:</strong> Control de calidad, encuestas, pruebas médicas.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Poisson -->
+            <div class="distribution-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-bell"></i> Poisson</h3>
+                    <button class="fav-btn"><i class="fas fa-star"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="poisson-lambda">Tasa (λ)</label>
+                        <input id="poisson-lambda" min="0.1" step="0.1" type="number" value="4">
+                    </div>
+                    
+                    <button class="btn-calculate" onclick="plotPoisson()">
+                        <i class="fas fa-calculator"></i> Calcular y Graficar
+                    </button>
+                    
+                    <div class="chart-container">
+                        <canvas id="poisson-chart"></canvas>
+                    </div>
+                    
+                    <div class="random-result" id="poisson-result">Número aleatorio: </div>
+                    
+                    <div class="distribution-description">
+                        <p><strong>Descripción:</strong> Modela el número de eventos en un intervalo de tiempo o espacio.</p>
+                        <p><strong>Uso:</strong> Llegadas a un centro de servicio, defectos en materiales.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Binomial Negativa -->
+            <div class="distribution-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-redo"></i> Binomial Negativa</h3>
+                    <button class="fav-btn"><i class="far fa-star"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="negbin-r">Número de éxitos (r)</label>
+                            <input id="negbin-r" min="1" step="1" type="number" value="5">
                         </div>
-</div>
-</div>
-</div>
-</div>
-<!-- Generador de números aleatorios -->
-<div class="content-section" id="solar-calculator">
-<h2 class="section-title"><i class="fas fa-solar-panel"></i> Calculadora de Paneles Solares</h2>
-<div class="distribution-card">
-<div class="card-header" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">Estimación de Paneles para Morelia</div>
-<div class="card-body">
-<div class="input-group">
-<label for="solar-consumo">Consumo mensual (kWh)</label>
-<input id="solar-consumo" max="2000" min="100" type="number" value="400"/>
-</div>
-<div class="input-group">
-<label for="solar-costo">Costo por panel (MXN)</label>
-<input id="solar-costo" step="500" type="number" value="10000"/>
-</div>
-<div class="input-group">
-<label for="solar-precio">Precio electricidad (MXN/kWh)</label>
-<input id="solar-precio" step="0.1" type="number" value="1.5"/>
-</div>
-<div class="input-group">
-<label for="solar-degradacion">Degradación anual del panel (%)</label>
-<input id="solar-degradacion" max="5" min="0" step="0.1" type="number" value="0.5"/>
-</div>
-<button class="btn-calculate" onclick="simularPaneles()">Calcular</button>
-<div class="random-result" id="solar-resultados">Resultados: </div>
-<div class="chart-container"><canvas id="solar-histograma"></canvas></div>
-</div>
-</div>
-</div><div class="generator-section">
-<div class="generator-header">
-<h2 class="section-title"><i class="fas fa-random"></i> Generador de Números Aleatorios</h2>
-<button class="btn-generate" onclick="generateRandomNumbers()">
-<i class="fas fa-sync-alt"></i> Generar Nuevos
-                </button>
-</div>
-<div class="results-container" id="random-results">
-<!-- Los números aleatorios se generarán aquí -->
-</div>
-</div>
-<footer>
-<p>© 2023 Calculadora de Distribuciones Estadísticas | Herramienta educativa para análisis de probabilidad</p>
-</footer>
-</div>
-<script>
+                        <div class="input-group">
+                            <label for="negbin-p">Probabilidad (p)</label>
+                            <input id="negbin-p" max="1" min="0" step="0.1" type="number" value="0.7">
+                        </div>
+                    </div>
+                    
+                    <button class="btn-calculate" onclick="plotNegativeBinomial()">
+                        <i class="fas fa-calculator"></i> Calcular y Graficar
+                    </button>
+                    
+                    <div class="chart-container">
+                        <canvas id="negbin-chart"></canvas>
+                    </div>
+                    
+                    <div class="random-result" id="negbin-result">Número aleatorio: </div>
+                    
+                    <div class="distribution-description">
+                        <p><strong>Descripción:</strong> Número de fracasos antes de obtener un número fijo de éxitos.</p>
+                        <p><strong>Uso:</strong> Modelado de recuentos hasta alcanzar cierto número de éxitos.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Geométrica -->
+            <div class="distribution-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-hourglass-half"></i> Geométrica</h3>
+                    <button class="fav-btn"><i class="far fa-star"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="geometric-p">Probabilidad (p)</label>
+                        <input id="geometric-p" max="1" min="0" step="0.1" type="number" value="0.7">
+                    </div>
+                    
+                    <button class="btn-calculate" onclick="plotGeometric()">
+                        <i class="fas fa-calculator"></i> Calcular y Graficar
+                    </button>
+                    
+                    <div class="chart-container">
+                        <canvas id="geometric-chart"></canvas>
+                    </div>
+                    
+                    <div class="random-result" id="geometric-result">Número aleatorio: </div>
+                    
+                    <div class="distribution-description">
+                        <p><strong>Descripción:</strong> Número de intentos hasta el primer éxito.</p>
+                        <p><strong>Uso:</strong> Tiempo hasta la primera ocurrencia de un evento.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hipergeométrica -->
+            <div class="distribution-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-box-open"></i> Hipergeométrica</h3>
+                    <button class="fav-btn"><i class="far fa-star"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="hyper-n">Tamaño población (N)</label>
+                            <input id="hyper-n" min="1" step="1" type="number" value="50">
+                        </div>
+                        <div class="input-group">
+                            <label for="hyper-k">Éxitos en población (K)</label>
+                            <input id="hyper-k" min="1" step="1" type="number" value="10">
+                        </div>
+                        <div class="input-group">
+                            <label for="hyper-num">Extracciones (n)</label>
+                            <input id="hyper-num" min="1" step="1" type="number" value="5">
+                        </div>
+                    </div>
+                    
+                    <button class="btn-calculate" onclick="plotHypergeometric()">
+                        <i class="fas fa-calculator"></i> Calcular y Graficar
+                    </button>
+                    
+                    <div class="chart-container">
+                        <canvas id="hyper-chart"></canvas>
+                    </div>
+                    
+                    <div class="random-result" id="hyper-result">Número aleatorio: </div>
+                    
+                    <div class="distribution-description">
+                        <p><strong>Descripción:</strong> Éxitos en muestras sin reemplazo de una población finita.</p>
+                        <p><strong>Uso:</strong> Control de calidad, muestreo de aceptación.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
         // Variables para almacenar los gráficos
-        let uniformChart = null;
-        let gaussianChart = null;
-        let exponentialChart = null;
         let bernoulliChart = null;
         let binomialChart = null;
         let poissonChart = null;
         let negbinChart = null;
         let geometricChart = null;
         let hyperChart = null;
-        let diceChart = null;
-        
-        // Variables para juegos
-        let urnWins = 0;
-        let urnAttempts = 0;
-        let diceRolls = 0;
-        let diceResults = Array(12).fill(0);
-        let dartThrows = 0;
-        let dartHits = 0;
-        let boxesOpened = 0;
-        let rareItems = 0;
-        let fishingAttempts = 0;
-        let rareFish = 0;
-        let currentFishingAttempts = 0;
         
         // Función para cambiar entre secciones
-        document.querySelectorAll('.menu-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                // Quitar clase active de todos los botones
-                document.querySelectorAll('.menu-btn').forEach(btn => {
-                    btn.classList.remove('active');
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Actualizar clase active
+                document.querySelectorAll('.nav-menu a').forEach(a => {
+                    a.classList.remove('active');
                 });
+                this.classList.add('active');
                 
-                // Agregar clase active al botón clickeado
-                button.classList.add('active');
-                
-                // Ocultar todas las secciones
-                document.querySelectorAll('.content-section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                // Mostrar la sección correspondiente
-                const target = button.getAttribute('data-target');
-                document.getElementById(target).classList.add('active');
+                // Aquí iría la lógica para mostrar la sección correspondiente
+                // (implementación simplificada para este ejemplo)
             });
         });
         
-        // Función para generar números aleatorios
-        function generateRandomNumbers() {
-            const container = document.getElementById('random-results');
-            container.innerHTML = '';
-            
-            for (let i = 0; i < 50; i++) {
-                const randomNum = (Math.random() * 100).toFixed(2);
-                const badge = document.createElement('div');
-                badge.className = 'number-badge';
-                badge.textContent = randomNum;
-                container.appendChild(badge);
-            }
-        }
+        // Toggle sidebar en móviles
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
         
-        // Funciones para las distribuciones continuas
-        function plotUniform() {
-            const a = parseFloat(document.getElementById('uniform-a').value);
-            const b = parseFloat(document.getElementById('uniform-b').value);
-            
-            if (a >= b) {
-                alert('El valor mínimo debe ser menor que el valor máximo');
-                return;
-            }
-            
-            // Generar datos para el gráfico
-            const step = (b - a) / 100;
-            const labels = [];
-            const data = [];
-            
-            for (let x = a - (b - a) * 0.2; x <= b + (b - a) * 0.2; x += step) {
-                labels.push(x.toFixed(2));
-                if (x >= a && x <= b) {
-                    data.push(1 / (b - a));
-                } else {
-                    data.push(0);
-                }
-            }
-            
-            // Generar número aleatorio
-            const randomNum = (a + Math.random() * (b - a)).toFixed(4);
-            document.getElementById('uniform-result').textContent = `Número aleatorio: ${randomNum}`;
-            
-            // Crear o actualizar el gráfico
-            const ctx = document.getElementById('uniform-chart').getContext('2d');
-            
-            if (uniformChart) {
-                uniformChart.destroy();
-            }
-            
-            uniformChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Función de Densidad',
-                        data: data,
-                        borderColor: '#4e54c8',
-                        backgroundColor: 'rgba(78, 84, 200, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.1,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'f(x)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'x'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        function plotGaussian() {
-            const mean = parseFloat(document.getElementById('gaussian-mean').value);
-            const std = parseFloat(document.getElementById('gaussian-std').value);
-            
-            if (std <= 0) {
-                alert('La desviación estándar debe ser mayor que cero');
-                return;
-            }
-            
-            // Generar datos para el gráfico
-            const range = 4 * std;
-            const start = mean - range;
-            const end = mean + range;
-            const step = (end - start) / 100;
-            const labels = [];
-            const data = [];
-            
-            for (let x = start; x <= end; x += step) {
-                labels.push(x.toFixed(2));
-                const exponent = -0.5 * Math.pow((x - mean) / std, 2);
-                data.push((1 / (std * Math.sqrt(2 * Math.PI))) * Math.exp(exponent));
-            }
-            
-            // Generar número aleatorio con Box-Muller
-            const u1 = Math.random();
-            const u2 = Math.random();
-            const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-            const randomNum = (mean + z0 * std).toFixed(4);
-            document.getElementById('gaussian-result').textContent = `Número aleatorio: ${randomNum}`;
-            
-            // Crear o actualizar el gráfico
-            const ctx = document.getElementById('gaussian-chart').getContext('2d');
-            
-            if (gaussianChart) {
-                gaussianChart.destroy();
-            }
-            
-            gaussianChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Función de Densidad',
-                        data: data,
-                        borderColor: '#ff6b6b',
-                        backgroundColor: 'rgba(255, 107, 107, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.1,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'f(x)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'x'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        function plotExponential() {
-            const lambda = parseFloat(document.getElementById('exponential-lambda').value);
-            
-            if (lambda <= 0) {
-                alert('La tasa (λ) debe ser mayor que cero');
-                return;
-            }
-            
-            // Generar datos para el gráfico
-            const maxX = 10 / lambda;
-            const step = maxX / 100;
-            const labels = [];
-            const data = [];
-            
-            for (let x = 0; x <= maxX; x += step) {
-                labels.push(x.toFixed(2));
-                data.push(lambda * Math.exp(-lambda * x));
-            }
-            
-            // Generar número aleatorio
-            const u = Math.random();
-            const randomNum = (-Math.log(1 - u) / lambda).toFixed(4);
-            document.getElementById('exponential-result').textContent = `Número aleatorio: ${randomNum}`;
-            
-            // Crear o actualizar el gráfico
-            const ctx = document.getElementById('exponential-chart').getContext('2d');
-            
-            if (exponentialChart) {
-                exponentialChart.destroy();
-            }
-            
-            exponentialChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Función de Densidad',
-                        data: data,
-                        borderColor: '#1dd1a1',
-                        backgroundColor: 'rgba(29, 209, 161, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.1,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'f(x)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'x'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Funciones para las distribuciones discretas
+        // Funciones para las distribuciones discretas (iguales que antes)
         function plotBernoulli() {
             const p = parseFloat(document.getElementById('bernoulli-p').value);
             
@@ -1280,12 +737,12 @@
                         label: 'Función de Masa',
                         data: data,
                         backgroundColor: [
-                            'rgba(78, 84, 200, 0.7)',
-                            'rgba(255, 107, 107, 0.7)'
+                            'rgba(67, 97, 238, 0.7)',
+                            'rgba(247, 37, 133, 0.7)'
                         ],
                         borderColor: [
-                            'rgba(78, 84, 200, 1)',
-                            'rgba(255, 107, 107, 1)'
+                            'rgba(67, 97, 238, 1)',
+                            'rgba(247, 37, 133, 1)'
                         ],
                         borderWidth: 1
                     }]
@@ -1297,15 +754,26 @@
                         y: {
                             beginAtZero: true,
                             max: 1,
-                            title: {
-                                display: true,
-                                text: 'P(X=x)'
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
                             }
                         },
                         x: {
-                            title: {
-                                display: true,
-                                text: 'x'
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e6f1ff'
                             }
                         }
                     }
@@ -1369,8 +837,8 @@
                     datasets: [{
                         label: 'Función de Masa',
                         data: data,
-                        backgroundColor: 'rgba(143, 148, 251, 0.7)',
-                        borderColor: 'rgba(78, 84, 200, 1)',
+                        backgroundColor: 'rgba(76, 201, 240, 0.7)',
+                        borderColor: 'rgba(76, 201, 240, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -1380,15 +848,26 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'P(X=x)'
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
                             }
                         },
                         x: {
-                            title: {
-                                display: true,
-                                text: 'Número de éxitos (x)'
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e6f1ff'
                             }
                         }
                     }
@@ -1451,8 +930,8 @@
                     datasets: [{
                         label: 'Función de Masa',
                         data: data,
-                        backgroundColor: 'rgba(29, 209, 161, 0.7)',
-                        borderColor: 'rgba(23, 173, 134, 1)',
+                        backgroundColor: 'rgba(114, 9, 183, 0.7)',
+                        borderColor: 'rgba(114, 9, 183, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -1462,15 +941,26 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'P(X=x)'
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
                             }
                         },
                         x: {
-                            title: {
-                                display: true,
-                                text: 'Número de eventos (x)'
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e6f1ff'
                             }
                         }
                     }
@@ -1478,7 +968,6 @@
             });
         }
         
-        // Función para Binomial Negativa
         function plotNegativeBinomial() {
             const r = parseInt(document.getElementById('negbin-r').value);
             const p = parseFloat(document.getElementById('negbin-p').value);
@@ -1542,8 +1031,8 @@
                     datasets: [{
                         label: 'Función de Masa',
                         data: data,
-                        backgroundColor: 'rgba(155, 89, 182, 0.7)',
-                        borderColor: 'rgba(142, 68, 173, 1)',
+                        backgroundColor: 'rgba(255, 158, 0, 0.7)',
+                        borderColor: 'rgba(255, 158, 0, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -1553,15 +1042,26 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'P(X=x)'
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
                             }
                         },
                         x: {
-                            title: {
-                                display: true,
-                                text: 'Número de fracasos (x)'
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e6f1ff'
                             }
                         }
                     }
@@ -1569,7 +1069,6 @@
             });
         }
         
-        // Función para Geométrica
         function plotGeometric() {
             const p = parseFloat(document.getElementById('geometric-p').value);
             
@@ -1610,8 +1109,8 @@
                     datasets: [{
                         label: 'Función de Masa',
                         data: data,
-                        backgroundColor: 'rgba(230, 126, 34, 0.7)',
-                        borderColor: 'rgba(211, 84, 0, 1)',
+                        backgroundColor: 'rgba(42, 157, 143, 0.7)',
+                        borderColor: 'rgba(42, 157, 143, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -1621,15 +1120,26 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'P(X=x)'
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
                             }
                         },
                         x: {
-                            title: {
-                                display: true,
-                                text: 'Intento del primer éxito (x)'
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e6f1ff'
                             }
                         }
                     }
@@ -1637,7 +1147,6 @@
             });
         }
         
-        // Función para Hipergeométrica
         function plotHypergeometric() {
             const N = parseInt(document.getElementById('hyper-n').value);
             const K = parseInt(document.getElementById('hyper-k').value);
@@ -1705,8 +1214,8 @@
                     datasets: [{
                         label: 'Función de Masa',
                         data: data,
-                        backgroundColor: 'rgba(232, 67, 147, 0.7)',
-                        borderColor: 'rgba(214, 48, 49, 1)',
+                        backgroundColor: 'rgba(230, 57, 70, 0.7)',
+                        borderColor: 'rgba(230, 57, 70, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -1716,15 +1225,26 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'P(X=x)'
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
                             }
                         },
                         x: {
-                            title: {
-                                display: true,
-                                text: 'Éxitos en muestra (x)'
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#a8b2d1'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e6f1ff'
                             }
                         }
                     }
@@ -1732,297 +1252,9 @@
             });
         }
         
-        // Funciones para los minijuegos
-        function drawBalls() {
-            const urn = document.getElementById('urn');
-            const balls = urn.querySelectorAll('.ball');
-            const bet = parseInt(document.getElementById('bet').value);
-            const withReplacement = document.getElementById('with-replacement').checked;
-            
-            if (bet < 2 || bet > 12) {
-                alert('La apuesta debe estar entre 2 y 12');
-                return;
-            }
-            
-            // Seleccionar dos bolas aleatorias
-            let firstIndex, secondIndex;
-            firstIndex = Math.floor(Math.random() * balls.length);
-            
-            if (withReplacement) {
-                secondIndex = Math.floor(Math.random() * balls.length);
-            } else {
-                do {
-                    secondIndex = Math.floor(Math.random() * balls.length);
-                } while (secondIndex === firstIndex);
-            }
-            
-            const ball1 = balls[firstIndex];
-            const ball2 = balls[secondIndex];
-            
-            const num1 = parseInt(ball1.textContent);
-            const num2 = parseInt(ball2.textContent);
-            const sum = num1 + num2;
-            
-            // Animación
-            ball1.style.transform = 'translateY(-20px)';
-            ball2.style.transform = 'translateY(-20px)';
-            
-            setTimeout(() => {
-                ball1.style.transform = '';
-                ball2.style.transform = '';
-                
-                // Mostrar resultados
-                document.getElementById('urn-result').textContent = `Resultado: ${num1} y ${num2}`;
-                document.getElementById('urn-sum').textContent = `Suma: ${sum}`;
-                
-                urnAttempts++;
-                if (sum === bet) {
-                    urnWins++;
-                    document.getElementById('urn-result').innerHTML += ' <span style="color: var(--success);">¡Ganaste!</span>';
-                }
-                
-                document.getElementById('urn-win').innerHTML = `Victorias: <span class="highlight">${urnWins}</span> | Intentos: <span class="highlight">${urnAttempts}</span>`;
-            }, 500);
-        }
-        
-        function rollDice() {
-            const die1 = document.getElementById('die1');
-            const die2 = document.getElementById('die2');
-            const useTwoDice = document.getElementById('two-dice').checked;
-            
-            // Animación
-            die1.textContent = '...';
-            die2.textContent = '...';
-            
-            setTimeout(() => {
-                const num1 = Math.floor(Math.random() * 6) + 1;
-                die1.textContent = num1;
-                
-                if (useTwoDice) {
-                    const num2 = Math.floor(Math.random() * 6) + 1;
-                    die2.textContent = num2;
-                    const sum = num1 + num2;
-                    document.getElementById('dice-result').textContent = `Resultado: ${num1} + ${num2} = ${sum}`;
-                    
-                    // Actualizar estadísticas
-                    diceRolls++;
-                    diceResults[sum-1]++;
-                    document.getElementById('dice-stats').innerHTML = `Total lanzamientos: <span class="highlight">${diceRolls}</span>`;
-                    
-                    // Actualizar gráfico
-                    updateDiceChart();
-                } else {
-                    die2.textContent = '-';
-                    document.getElementById('dice-result').textContent = `Resultado: ${num1}`;
-                    
-                    // Actualizar estadísticas
-                    diceRolls++;
-                    diceResults[num1-1]++;
-                    document.getElementById('dice-stats').innerHTML = `Total lanzamientos: <span class="highlight">${diceRolls}</span>`;
-                    
-                    // Actualizar gráfico
-                    updateDiceChart();
-                }
-            }, 500);
-        }
-        
-        function updateDiceChart() {
-            const ctx = document.getElementById('dice-chart').getContext('2d');
-            const useTwoDice = document.getElementById('two-dice').checked;
-            
-            if (diceChart) {
-                diceChart.destroy();
-            }
-            
-            if (useTwoDice) {
-                const labels = Array.from({length: 11}, (_, i) => i + 2);
-                diceChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Frecuencia de suma',
-                            data: diceResults.slice(1, 12),
-                            backgroundColor: 'rgba(230, 126, 34, 0.7)',
-                            borderColor: 'rgba(211, 84, 0, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Frecuencia'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Suma de dados'
-                                }
-                            }
-                        }
-                    }
-                });
-            } else {
-                const labels = Array.from({length: 6}, (_, i) => i + 1);
-                diceChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Frecuencia',
-                            data: diceResults.slice(0, 6),
-                            backgroundColor: 'rgba(230, 126, 34, 0.7)',
-                            borderColor: 'rgba(211, 84, 0, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Frecuencia'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Valor del dado'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        }
-        
-        function throwDart() {
-            const dartboard = document.getElementById('dartboard');
-            
-            // Crear un nuevo dardo
-            const dart = document.createElement('div');
-            dart.className = 'dart';
-            
-            // Posición aleatoria con distribución normal
-            const x = gaussianRandom(100, 30);
-            const y = gaussianRandom(100, 30);
-            
-            dart.style.left = `${x}%`;
-            dart.style.top = `${y}%`;
-            
-            dartboard.appendChild(dart);
-            
-            // Determinar si es un acierto (dentro del 20% central)
-            dartThrows++;
-            const distance = Math.sqrt(Math.pow(x - 50, 2) + Math.pow(y - 50, 2));
-            if (distance < 10) {
-                dartHits++;
-                document.getElementById('dart-result').innerHTML = `Resultado: <span style="color: var(--success);">¡Centro! (${distance.toFixed(1)}% de distancia)</span>`;
-            } else {
-                document.getElementById('dart-result').innerHTML = `Resultado: ${distance.toFixed(1)}% de distancia del centro`;
-            }
-            
-            document.getElementById('dart-stats').innerHTML = `Aciertos: <span class="highlight">${dartHits}</span> | Lanzamientos: <span class="highlight">${dartThrows}</span>`;
-            
-            // Eliminar dardos antiguos después de un tiempo
-            setTimeout(() => {
-                dart.remove();
-            }, 3000);
-        }
-        
-        function gaussianRandom(mean, stdDev) {
-            const u1 = Math.random();
-            const u2 = Math.random();
-            const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-            return z0 * stdDev + mean;
-        }
-        
-        function openBox() {
-            const prob = parseFloat(document.getElementById('box-prob').value);
-            const resultDiv = document.getElementById('box-result');
-            
-            if (prob < 0.01 || prob > 0.99) {
-                alert('La probabilidad debe estar entre 0.01 y 0.99');
-                return;
-            }
-            
-            // Animación
-            const lootBox = document.querySelector('.loot-box');
-            lootBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            lootBox.style.backgroundColor = '#e74c3c';
-            
-            setTimeout(() => {
-                boxesOpened++;
-                const rand = Math.random();
-                
-                if (rand < prob) {
-                    // Ítem raro
-                    rareItems++;
-                    resultDiv.innerHTML = '<span style="color: #f1c40f;">¡Ítem legendario!</span>';
-                    lootBox.innerHTML = '<i class="fas fa-crown" style="color: #f1c40f;"></i>';
-                    lootBox.style.backgroundColor = '#f1c40f';
-                } else if (rand < 0.3) {
-                    // Ítem épico
-                    resultDiv.innerHTML = '<span style="color: #9b59b6;">¡Ítem épico!</span>';
-                    lootBox.innerHTML = '<i class="fas fa-gem" style="color: #9b59b6;"></i>';
-                    lootBox.style.backgroundColor = '#9b59b6';
-                } else if (rand < 0.6) {
-                    // Ítem raro
-                    resultDiv.innerHTML = '<span style="color: #3498db;">¡Ítem raro!</span>';
-                    lootBox.innerHTML = '<i class="fas fa-star" style="color: #3498db;"></i>';
-                    lootBox.style.backgroundColor = '#3498db';
-                } else {
-                    // Ítem común
-                    resultDiv.innerHTML = 'Ítem común';
-                    lootBox.innerHTML = '<i class="fas fa-cube"></i>';
-                    lootBox.style.backgroundColor = '#e67e22';
-                }
-                
-                document.getElementById('box-stats').innerHTML = `Ítems raros: <span class="highlight">${rareItems}</span> | Total cajas: <span class="highlight">${boxesOpened}</span>`;
-            }, 1500);
-        }
-        
-        function goFishing() {
-            const prob = parseFloat(document.getElementById('fish-prob').value);
-            const resultDiv = document.getElementById('fishing-result');
-            
-            if (prob < 0.01 || prob > 0.99) {
-                alert('La probabilidad debe estar entre 0.01 y 0.99');
-                return;
-            }
-            
-            currentFishingAttempts++;
-            
-            const rand = Math.random();
-            if (rand < prob) {
-                // Pescó un pez raro
-                rareFish++;
-                resultDiv.innerHTML = `<span style="color: var(--success);">¡Pescaste un pez raro en ${currentFishingAttempts} intentos!</span>`;
-                document.getElementById('fishing-attempts').innerHTML = `Intentos actuales: <span class="highlight">0</span>`;
-                currentFishingAttempts = 0;
-            } else {
-                resultDiv.innerHTML = `Intento ${currentFishingAttempts}: No pescaste nada`;
-                document.getElementById('fishing-attempts').innerHTML = `Intentos actuales: <span class="highlight">${currentFishingAttempts}</span>`;
-            }
-            
-            document.getElementById('fishing-stats').innerHTML = `Total peces raros: <span class="highlight">${rareFish}</span>`;
-        }
-        
         // Inicializar la página
         window.onload = function() {
             // Graficar distribuciones con valores por defecto
-            plotUniform();
-            plotGaussian();
-            plotExponential();
             plotBernoulli();
             plotBinomial();
             plotPoisson();
@@ -2030,93 +1262,22 @@
             plotGeometric();
             plotHypergeometric();
             
-            // Inicializar gráfico de dados
-            updateDiceChart();
-            
-            // Generar números aleatorios iniciales
-            generateRandomNumbers();
+            // Agregar funcionalidad de favoritos
+            document.querySelectorAll('.fav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        this.style.color = '#ffd43b';
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        this.style.color = '#a8b2d1';
+                    }
+                });
+            });
         };
     </script>
-<script>
-// --------- Simulación de Paneles ---------
-function simularPaneles() {
-    const consumoMensual = parseFloat(document.getElementById("solar-consumo").value);
-    const costoPanel = parseFloat(document.getElementById("solar-costo").value);
-    const precioKwh = parseFloat(document.getElementById("solar-precio").value);
-    const degradacion = parseFloat(document.getElementById("solar-degradacion").value);
-
-    const consumoDiario = consumoMensual / 30;
-    const n = 1000;
-    const radiacion = Array.from({length: n}, () => normalRandom(6, 0.5));
-    const consumo = Array.from({length: n}, () => normalRandom(consumoDiario, 0.8));
-
-    const area = 1.6, eficiencia = 0.18, perdidas = 0.8;
-    const energiaPanel = radiacion.map(r => r * area * eficiencia * perdidas);
-    const razon = consumo.map((c, i) => c / energiaPanel[i]);
-    const razonOrdenada = [...razon].sort((a,b) => a - b);
-    const N = Math.ceil(razonOrdenada[Math.floor(0.95 * n)]);
-
-    const costoTotal = N * costoPanel;
-    const ahorroMensual = consumoMensual * precioKwh;
-
-    let años = 0, totalAhorro = 0;
-    const energiaAnual = promedio(energiaPanel) * 365;
-    const costoAnual = ahorroMensual * 12;
-    while (totalAhorro < costoTotal && años < 50) {
-        const factor = Math.pow(1 - degradacion / 100, años);
-        totalAhorro += costoAnual * factor;
-        años++;
-    }
-
-    document.getElementById("solar-resultados").innerHTML = `
-        <p>Paneles necesarios (95% confianza): <strong>${N}</strong></p>
-        <p>Costo total: <strong>$${costoTotal.toFixed(2)}</strong></p>
-        <p>Ahorro mensual estimado: <strong>$${ahorroMensual.toFixed(2)}</strong></p>
-        <p>Tiempo de recuperación: <strong>${años} años</strong></p>
-    `;
-
-    // Histograma
-    const ctx = document.getElementById('solar-histograma').getContext('2d');
-    const counts = {};
-    razon.forEach(v => {
-        const k = Math.round(v);
-        counts[k] = (counts[k] || 0) + 1;
-    });
-    const labels = Object.keys(counts);
-    const values = Object.values(counts);
-
-    if (window.solarChart) window.solarChart.destroy();
-    window.solarChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Distribución de Paneles',
-                data: values,
-                backgroundColor: 'rgba(243, 156, 18, 0.6)',
-                borderColor: 'rgba(243, 156, 18, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { beginAtZero: true },
-                x: { title: { display: true, text: 'Cantidad de Paneles' } }
-            }
-        }
-    });
-}
-
-function normalRandom(media, sigma) {
-    const u1 = Math.random(), u2 = Math.random();
-    const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-    return Math.max(0, media + z * sigma);
-}
-
-function promedio(arr) {
-    return arr.reduce((a, b) => a + b, 0) / arr.length;
-}
-</script></body>
+</body>
 </html>
